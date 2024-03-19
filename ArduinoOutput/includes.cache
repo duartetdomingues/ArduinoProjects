@@ -1,0 +1,27 @@
+[
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "/home/duarte/.arduino15/packages/rp2040/hardware/rp2040/3.7.2/cores/rp2040"
+  },
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "/home/duarte/.arduino15/packages/rp2040/hardware/rp2040/3.7.2/variants/rpipico"
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/ArduinoOutput/sketch/lab_SCDTR_1st.ino.cpp",
+    "Include": "RunningMedian.h",
+    "Includepath": "/home/duarte/Arduino/libraries/RunningMedian"
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/ArduinoOutput/sketch/lab_SCDTR_1st.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/libraries/RunningMedian/RunningMedian.cpp",
+    "Include": "",
+    "Includepath": null
+  }
+]

@@ -1,0 +1,5 @@
+{
+    "board": "arduino:avr:leonardo",
+    "sketch": "GPS/GPS.ino",
+    "port": "/dev/ttyACM1"
+}

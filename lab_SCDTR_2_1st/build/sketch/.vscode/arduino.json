@@ -1,0 +1,8 @@
+#line 1 "/home/duarte/Arduino/lab_SCDTR_2_1st/.vscode/arduino.json"
+{
+    "configuration": "flash=2097152_0,freq=133,opt=Small,rtti=Disabled,stackprotect=Disabled,exceptions=Disabled,dbgport=Disabled,dbglvl=None,usbstack=picosdk,ipbtstack=ipv4only,uploadmethod=default",
+    "board": "rp2040:rp2040:rpipico",
+    "sketch": "lab_SCDTR_2_1st.ino",
+    "port": "/dev/ttyACM2",
+    "output": "build"
+}

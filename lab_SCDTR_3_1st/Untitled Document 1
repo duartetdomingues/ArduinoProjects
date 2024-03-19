@@ -1,0 +1,23 @@
+Log(LDR)=m1*log(LUX)+b
+
+Log(LDR)=m2*log(PWM)+b
+
+m1=-0.8
+b=6.152183
+
+m2=-0.3
+B = 7.2587;
+
+G=0.8/0.3=2.6667
+
+G=LUX/PWM
+PWM=2.67*LUX
+
+m1*log(LUX)=m2*log(PMW)
+
+log(PWM)=G*log(LUX)
+
+PWM=LUX*G
+
+
+

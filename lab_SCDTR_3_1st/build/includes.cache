@@ -1,0 +1,77 @@
+[
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "/home/duarte/.arduino15/packages/rp2040/hardware/rp2040/3.7.2/cores/rp2040"
+  },
+  {
+    "Sourcefile": null,
+    "Include": "",
+    "Includepath": "/home/duarte/.arduino15/packages/rp2040/hardware/rp2040/3.7.2/variants/rpipico"
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/lab_SCDTR_3_1st/build/sketch/lab_SCDTR_3_1st.ino.cpp",
+    "Include": "RunningMedian.h",
+    "Includepath": "/home/duarte/Arduino/libraries/RunningMedian"
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/lab_SCDTR_3_1st/build/sketch/lab_SCDTR_3_1st.ino.cpp",
+    "Include": "arduino-timer.h",
+    "Includepath": "/home/duarte/Arduino/libraries/arduino-timer/src"
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/lab_SCDTR_3_1st/build/sketch/lab_SCDTR_3_1st.ino.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/lab_SCDTR_3_1st/build/sketch/cmd.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/lab_SCDTR_3_1st/build/sketch/com.cpp",
+    "Include": "ACAN2515.h",
+    "Includepath": "/home/duarte/Arduino/libraries/ACAN2515/src"
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/lab_SCDTR_3_1st/build/sketch/com.cpp",
+    "Include": "SPI.h",
+    "Includepath": "/home/duarte/.arduino15/packages/rp2040/hardware/rp2040/3.7.2/libraries/SPI/src"
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/lab_SCDTR_3_1st/build/sketch/com.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/lab_SCDTR_3_1st/build/sketch/func.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/lab_SCDTR_3_1st/build/sketch/pid.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/libraries/RunningMedian/RunningMedian.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/libraries/ACAN2515/src/ACAN2515.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/duarte/Arduino/libraries/ACAN2515/src/ACAN2515Settings.cpp",
+    "Include": "",
+    "Includepath": null
+  },
+  {
+    "Sourcefile": "/home/duarte/.arduino15/packages/rp2040/hardware/rp2040/3.7.2/libraries/SPI/src/SPI.cpp",
+    "Include": "",
+    "Includepath": null
+  }
+]
