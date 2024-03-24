@@ -28,7 +28,7 @@
 #include <TinyGPS.h>
 
 TinyGPS gps;
-SoftwareSerial ss(3, 4); // Arduino TX, RX , 
+/* SoftwareSerial ss(1, 0); // Arduino TX, RX , */ 
 
 static void smartdelay(unsigned long ms);
 static void print_float(float val, float invalid, int len, int prec);
@@ -40,7 +40,7 @@ void setup()
 {
   // initialize both serial ports:
   Serial.begin(9600);  // Serial to print out GPS info in Arduino IDE
-  ss.begin(9600); // SoftSerial port to get GPS data. 
+  Serial1.begin(9600); // SoftSerial port to get GPS data. 
   while (!Serial) {
      ;
   };
@@ -89,11 +89,13 @@ static void smartdelay(unsigned long ms)
   unsigned long start = millis();
   do 
     {
-    while (ss.available())
+    while (Serial1.available())
     {
-        Serial.println("data");
+      //Serial.println("data");
       //ss.print(Serial.read());
-      gps.encode(ss.read());
+      gps.encode(Serial1.read());
+      //Serial.println(Serial1.read());
+      //Serial.print)
     }
   } while (millis() - start < ms);
 }
