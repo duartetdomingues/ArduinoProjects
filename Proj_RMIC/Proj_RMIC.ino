@@ -16,12 +16,24 @@ extern L3G gyro;        // Gyroscope
 extern LPS baro;     // Barometer
 
 long lat, lon;
+
+static const u1_t PROGMEM APPEUI[8]={ 0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0};
+void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);}
+
+// This should also be in little endian format, see above.
+static const u1_t PROGMEM DEVEUI[8]={ 0x1F, 0x63, 0x06, 0xD0, 0x7E, 0xD5, 0xB3, 0x70 };
+void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
+
+static const u1_t PROGMEM APPKEY[16] = {0x28, 0x76, 0xC6, 0xDE, 0x21, 0x12, 0xF1, 0xC3, 0x5F, 0xA4, 0xFF, 0x7B, 0xD3, 0xF4, 0xB1, 0x98};
+void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
  
 void setup()
 {
   delay(1000);
   Serial.begin(115200); // connect serial
   Serial1.begin(9600); // connect gps sensor
+
+  pinMode(2, OUTPUT);
 
   pinMode(12, OUTPUT);  // set the Heartbeat Sensor as output
   digitalWrite(12, HIGH);  // turn on the Heartbeat Sensor 
@@ -48,15 +60,21 @@ void setup()
   Serial.println("GPS Init");
 
 
-  Wire.begin(); // IMU sensor
+  Wire.begin(); // Start I2C as master 
+
   Serial.println("SPI Init");
-1C
+  Accel_Mag_Init();
+  Serial.println("Accel Init");
+
+  Gyro_Init();
   Serial.println("Gyro Init");
 
   Baro_Init();
   Serial.println("Baro Init");
 
   pulseSensor.analogInput(A0);
+
+  Serial.println("Pulse Init");
 
 
 
@@ -97,7 +115,7 @@ void loop()
 {
   count++;
 
-  while ( Serial1.available())     // check for gps data
+  while (Serial1.available())     // check for gps data
   {
     if (gps.encode( Serial1.read()))   // encode gps data
     {
@@ -110,9 +128,6 @@ void loop()
   Read_Gyro();   // This read gyro data 
 
   Read_Baro();    // Read I2C magnetometer 
-  
-
-
 
   delay(100);
 }

@@ -8,6 +8,8 @@
 #include <LSM303.h>
 #include <L3G.h>
 #include <LPS.h>
+#include <lmic.h>
+#include <hal/hal.h>
 
 
 void Accel_Mag_Init();
