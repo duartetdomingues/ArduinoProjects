@@ -15,17 +15,11 @@ extern LSM303 acc_mag;  // (accelerometer and magnetometer)
 extern L3G gyro;        // Gyroscope
 extern LPS baro;     // Barometer
 
+extern output_data_union mydata;
+
+extern osjob_t sendjob, checkjob;
+
 long lat, lon;
-
-static const u1_t PROGMEM APPEUI[8]={ 0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0};
-void os_getArtEui (u1_t* buf) { memcpy_P(buf, APPEUI, 8);}
-
-// This should also be in little endian format, see above.
-static const u1_t PROGMEM DEVEUI[8]={ 0x1F, 0x63, 0x06, 0xD0, 0x7E, 0xD5, 0xB3, 0x70 };
-void os_getDevEui (u1_t* buf) { memcpy_P(buf, DEVEUI, 8);}
-
-static const u1_t PROGMEM APPKEY[16] = {0x28, 0x76, 0xC6, 0xDE, 0x21, 0x12, 0xF1, 0xC3, 0x5F, 0xA4, 0xFF, 0x7B, 0xD3, 0xF4, 0xB1, 0x98};
-void os_getDevKey (u1_t* buf) {  memcpy_P(buf, APPKEY, 16);}
  
 void setup()
 {
@@ -33,7 +27,7 @@ void setup()
   Serial.begin(115200); // connect serial
   Serial1.begin(9600); // connect gps sensor
 
-  pinMode(2, OUTPUT);
+  Serial.println("Size of Output Data: " + String(sizeof(mydata)));
 
   pinMode(12, OUTPUT);  // set the Heartbeat Sensor as output
   digitalWrite(12, HIGH);  // turn on the Heartbeat Sensor 
@@ -60,11 +54,8 @@ void setup()
   Serial.println("GPS Init");
 
 
-  Wire.begin(); // Start I2C as master 
-
+  Wire.begin(); // IMU sensor
   Serial.println("SPI Init");
-  Accel_Mag_Init();
-  Serial.println("Accel Init");
 
   Gyro_Init();
   Serial.println("Gyro Init");
@@ -103,19 +94,29 @@ void setup()
    Serial.println("IMU Init");
  */
 
+  // LMIC init
+  os_init();
+  // Reset the MAC state. Session and pending data transfers will be discarded.
+  LMIC_reset();
+  LMIC_setClockError(MAX_CLOCK_ERROR * 1 / 100);
+
+  // Start job (sending automatically starts OTAA too)
+  do_send(&sendjob);
+
+  check_sensor(&checkjob);
+
 }
 
-
-char report1[80];
-char report2[80];
-
-
- 
+void loop()
+{
+  os_runloop_once();
+}
+/*
 void loop()
 {
   count++;
 
-  while (Serial1.available())     // check for gps data
+  while ( Serial1.available())     // check for gps data
   {
     if (gps.encode( Serial1.read()))   // encode gps data
     {
@@ -128,9 +129,13 @@ void loop()
   Read_Gyro();   // This read gyro data 
 
   Read_Baro();    // Read I2C magnetometer 
+  
+
+
 
   delay(100);
 }
+*/
 
 void logData()
 {
@@ -187,26 +192,48 @@ void logData()
   
 }
 
+uint8_t emergency(){
+  bool button = (digitalRead(BUTTON_PIN) == HIGH);
+  bool fall = false; //TODO fall logic
+  return button + (fall << 1);
+}
+
+void check_sensor(osjob_t* j){
+
+  count++;
+
+  // Read everything from every sensor
+  while ( Serial1.available())     // check for gps data
+  {
+    if (gps.encode( Serial1.read()))   // encode gps data
+    {
+      logData();
+    }
+  }
+
+  Read_Accel_Mag();     // Read I2C accelerometer
+
+  Read_Gyro();   // This read gyro data 
+
+  Read_Baro();    // Read I2C magnetometer 
+
+  pulseSensor.sawStartOfBeat();
+  int myBPM = pulseSensor.getBeatsPerMinute();  // Calls function on our pulseSensor object that returns BPM as an "int".
 
 
-/*   Serial.print("SATS: ");
-      Serial.println(gps.satellites.value());
-      Serial.print("LAT: ");
-      Serial.println(gps.location.lat(), 6);
-      Serial.print("LONG: ");
-      Serial.println(gps.location.lng(), 6);
-      Serial.print("ALT: ");
-      Serial.println(gps.altitude.meters());
-      Serial.print("SPEED: ");
-      Serial.println(gps.speed.mps());
- 
-      Serial.print("Date: ");
-      Serial.print(gps.date.day()); Serial.print("/");
-      Serial.print(gps.date.month()); Serial.print("/");
-      Serial.println(gps.date.year());
- 
-      Serial.print("Hour: ");
-      Serial.print(gps.time.hour()); Serial.print(":");
-      Serial.print(gps.time.minute()); Serial.print(":");
-      Serial.println(gps.time.second());
-      Serial.println("---------------------------"); */
+  // Store all values
+  mydata.struct_out.baro = baro.readPressureMillibars();
+  mydata.struct_out.bmp = myBPM;
+  mydata.struct_out.emergency = emergency();
+  mydata.struct_out.temp = baro.readTemperatureC()*1000;
+  
+  mydata.struct_out.gps.day = gps.date.day();
+  mydata.struct_out.gps.month = gps.date.month();
+  mydata.struct_out.gps.year = gps.date.year();
+  mydata.struct_out.gps.hour = gps.time.hour();
+  mydata.struct_out.gps.min = gps.time.minute();
+  mydata.struct_out.gps.lat = gps.location.lat();
+  mydata.struct_out.gps.lng = gps.location.lng();
+
+  os_setTimedCallback(&checkjob, os_getTime()+sec2osticks(CS_INTERVAL), check_sensor);   
+}
